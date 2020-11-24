@@ -10,7 +10,7 @@ module.exports = {
     publicPath: './',
     devServer:{
         open:true,
-        host:'localhost',
+        host:'pk.zhanghaichuan.com',
         port:"8080",
         https: {
             key:key,
