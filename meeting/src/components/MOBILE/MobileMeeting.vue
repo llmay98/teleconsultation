@@ -1,11 +1,11 @@
 <template>
-    <div style="height: 100%;display: flex;flex-direction: row;justify-content: center">
-        <div class="proom">
+    <div style="height: 100%;display: flex;flex-direction: column">
+        <div class="room">
             <div id="room" style="width: 100%;height: 100%">
                 <h2 id="room-header"></h2>
                 <div id="participants"></div>
             </div>
-            <div style="position: absolute;bottom: 10px;left: 45%">
+            <div style="position: absolute;top: 42%;left:40%">
                 <el-popover trigger="click" placement="top" width="160" :v-model="visible1">
                     <el-form>
                         <el-form-item label="病人ID" required>
@@ -18,7 +18,7 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item style="display:flex;flex-direction:column;justify-content: center">
+                        <el-form-item style="display:flex;flex-direction:column;align-items: center">
                             <el-button size="mini" type="success" @click="ShowDoc">confirm</el-button>
                         </el-form-item>
                     </el-form>
@@ -27,12 +27,12 @@
                 </el-popover>
             </div>
         </div>
-        <div id="pic" style="position: absolute;width: 50%;height: 100%;left: 50%">
-            <div v-show="IsShowPic" id="OpenSeaDragon" style="position: fixed;right:0;width:50%; height:100%"></div>
-            <div v-show="!IsShowPic" style="position: fixed;right:0;width:50%; height:100%;display:flex;align-items: center;justify-content: center">
+        <div id="pic" style="position:absolute;top:50%; width:100%; height: 50%">
+            <div v-show="IsShowPic" id="OpenSeaDragon" style="width:100%; height:100%"></div>
+            <div v-show="!IsShowPic" style="width:100%; height:100%;display:flex;align-items: center;justify-content: center">
                 <h1>现在无图片展示</h1>
             </div>
-            <div style="position: absolute;bottom: 10px;left: 45%">
+            <div style="position: absolute;bottom: 10px;left: 40%">
                 <el-popover trigger="click" placement="top" width="160" :v-model="visible">
                     <el-form>
                         <el-form-item label="切片名" required>
@@ -57,14 +57,14 @@
         </div>
         <el-drawer
                 :visible.sync="OpenDoc"
-                direction='ltr'
-                size="30%"
-                >
+                direction='btt'
+                size="100%"
+        >
             <span style="display: flex;justify-content: center">
                 <span style="position: absolute;top: 5px;font-weight: bold;font-size: 30px">病人病历</span>
             </span>
             <span style="display: flex;flex-direction: column">
-                <img style="width: 50%;height: 50%" src="../assets/logo.jpg" alt=""/>
+                <img style="width: 50%;height: 50%" src="../../assets/logo.jpg" alt=""/>
                 <span style="display: flex;flex-direction: column">
                     <span style="font-size: larger;font-weight: bold">ID：{{P_Res.PID}}</span>
                     <span style="font-size: larger;font-weight: bold">姓名：{{P_Res.name}}</span>
@@ -77,10 +77,10 @@
 </template>
 
 <script>
-    import OpenSeadragon from "../assets/openseadragon"
+    import OpenSeadragon from "../../assets/openseadragon"
     import * as kurentoUtils from "kurento-utils";
     export default {
-        name: "Meeting",
+        name: "MobileMeeting",
         data(){
             return{
                 visible:false,
@@ -174,6 +174,13 @@
                 this.sendMessage(msg);
             },
 
+            //判断是否为移动端
+            _isMobile() {
+                return navigator.userAgent.match(
+                    /(phone|pad|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows phone)/i
+                );
+            },
+            //退出会议
             Exit(){
                 let that=this;
                 if(this.IfCan===true){
@@ -190,15 +197,25 @@
                     this.participants[key].dispose();
                 }
                 this.wss.close();
-                this.$router.push('/Home')
+                console.log('exit');
+                // this.$router.push('/Home');
+                if (this._isMobile()) {
+                    // 手机端
+                    this.$router.push("/mobilehome");
+                } else {
+                    // pc端
+                    this.$router.push("/home");
+                }
             },
 
+            //通过websocket传递消息
             sendMessage(message) {
                 const jsonMessage = JSON.stringify(message);
                 console.log('Sending message: ' + jsonMessage);
                 this.wss.send(jsonMessage);
             },
 
+            //会议系列函数
             onNewParticipant(request) {
                 this.receiveVideo(request.name);
             },
@@ -232,11 +249,11 @@
                 };
                 participant.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
                     function (error) {
-                      if(error) {
-                          return console.error(error);
-                      }
-                      participant.rtcPeer.generateOffer (participant.OfferToReceiveVideo.bind(participant));
-                });
+                        if(error) {
+                            return console.error(error);
+                        }
+                        participant.rtcPeer.generateOffer (participant.OfferToReceiveVideo.bind(participant));
+                    });
                 msg.data.forEach(this.receiveVideo);
             },
 
@@ -251,12 +268,12 @@
                     onicecandidate: participant.onIceCandidate.bind(participant)
                 };
                 participant.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options,
-                        function (error) {
-                          if(error) {
-                              return console.error(error);
-                          }
-                          this.generateOffer (participant.OfferToReceiveVideo.bind(participant));
-                });
+                    function (error) {
+                        if(error) {
+                            return console.error(error);
+                        }
+                        this.generateOffer (participant.OfferToReceiveVideo.bind(participant));
+                    });
             },
 
             onParticipantLeft(request) {
@@ -294,6 +311,7 @@
                 document.getElementById('room-header').innerText = 'ROOM ' + this.$root.MeetingMessage.room;
             },
 
+            //websocket-onmessage
             getMessage(message){
                 let parsedMessage = JSON.parse(message.data);
                 console.info('Received message: ' + message.data);
@@ -439,22 +457,22 @@
             };
 
             that.viewer = OpenSeadragon({
-                    id: "OpenSeaDragon",
-                    prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
-                    panHorizontal: true,     //水平允许拖拽
-                    panVertical: true,         //竖直允许拖拽
-                    constrainDuringPan: false, //是否限制拖拽出允许显示范围
-                    wrapHorizontal: false,      //在水平方向会连续显示
-                    wrapVertical: false,          //垂直方向连续显示
-                    visibilityRatio: 0.3,    //图片在显示框view中被限制的最小百分百
-                    minPixelRatio: 0.5,          //最小像素比
-                    // minZoomImageRatio:0.2,    //最小允许缩小比例
-                    // maxZoomPixelRatio:2,  //最大允许放大比例
-                    defaultZoomLevel: 0,   //默认显示的放大倍数
-                    // minZoomLevel:null,      //最小放大倍数
-                    // maxZoomLevel:null,      //最大放大倍数
-                    showNavigator: true,
-                    navigatorPosition: "BOTTOM_RIGHT",
+                id: "OpenSeaDragon",
+                prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
+                panHorizontal: true,     //水平允许拖拽
+                panVertical: true,         //竖直允许拖拽
+                constrainDuringPan: false, //是否限制拖拽出允许显示范围
+                wrapHorizontal: false,      //在水平方向会连续显示
+                wrapVertical: false,          //垂直方向连续显示
+                visibilityRatio: 0.3,    //图片在显示框view中被限制的最小百分百
+                minPixelRatio: 0.5,          //最小像素比
+                // minZoomImageRatio:0.2,    //最小允许缩小比例
+                // maxZoomPixelRatio:2,  //最大允许放大比例
+                defaultZoomLevel: 0,   //默认显示的放大倍数
+                // minZoomLevel:null,      //最小放大倍数
+                // maxZoomLevel:null,      //最大放大倍数
+                showNavigator: true,
+                navigatorPosition: "BOTTOM_RIGHT",
             });
 
             that.viewer.addHandler('animation-finish',function () {
@@ -484,13 +502,11 @@
 </script>
 
 <style>
-    .proom{
+    .room{
         display:flex;
         flex-wrap: wrap;
-        position: absolute;
-        left: 0;
-        width: 50%;
-        height: 100%;
+        width: 100%;
+        height: 50%;
         background-color: #c3ffea;
     }
 
@@ -543,9 +559,10 @@
     }
 
     .participant.main {
-        width: 80%;
+        width: 20%;
         height: 50%;
-        margin: 0 auto;
+        margin-left: 5px;
+        margin-right: 5px;
     }
 
     .participant.main video {

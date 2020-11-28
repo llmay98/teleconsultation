@@ -1,13 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from "./components/Login";
-import Home from "./components/Home";
-import Mine from "./components/Mine";
-import Meeting from "./components/Meeting";
-import Register from "./components/Register";
-import Test from "./components/Test";
-import MobileMeeting from "./components/MobileMeeting";
-import MobileHome from "./components/MobileHome";
+import Login from "./components/PC/Login";
+import Home from "./components/PC/Home";
+import Mine from "./components/PC/Mine";
+import Meeting from "./components/PC/Meeting";
+import Register from "./components/PC/Register";
+import MobileMeeting from "./components/MOBILE/MobileMeeting";
+import MobileHome from "./components/MOBILE/MobileHome";
 
 
 Vue.use(VueRouter);
@@ -19,7 +18,6 @@ const routes = [
   {path:'/home/mine',component:Mine},
   {path:'/meeting',component:Meeting},
   {path:'/register',component:Register},
-  {path:'/test',component:Test},
   {path:'/mobilemeeting',component:MobileMeeting},
   {path:'/mobilehome',component:MobileHome}
 ];

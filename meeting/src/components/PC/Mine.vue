@@ -3,7 +3,7 @@
         <div class="logo_info_box">
             <!-- logo -->
             <div class="logo_box" @click="BackHome">
-                <img src="../assets/logo.jpg" alt="" :title="'返回首页'">
+                <img src="../../assets/logo.jpg" alt="" :title="'返回首页'">
             </div>
             <!-- info form -->
             <el-form ref="InfoFormRef" :rules="InfoFormRules" class="form_box" :model="InfoForm">

@@ -58,7 +58,7 @@
                 <div v-show="this.item_index==='2'" class="login_box">
                     <!-- logo -->
                     <div class="logo_box">
-                        <img src="../assets/logo.jpg" alt="">
+                        <img src="../../assets/logo.jpg" alt="">
                     </div>
                     <!-- login meeting form -->
                     <el-form ref="LoginMeetFormRef" :rules="LoginMeetFormRules" class="form_box" :model="LoginMeetForm">
@@ -107,7 +107,7 @@
                                 width="120px">
                             <template slot-scope="scope">
                                 <el-button
-                                        @click.native.prevent="DeleteItem(scope.$index, MeetingList)"
+                                        @click.native.prevent="new DeleteItem(scope.$index, MeetingList)"
                                         type="text"
                                         style="color: red">
                                     delete
@@ -174,6 +174,7 @@
     export default {
         name: "Home",
         data(){
+            //预约时间校准函数
             let CheckStart=(rule,value,callback)=>{
                 let OldTime=new Date();
                 if(value===''){
@@ -197,9 +198,10 @@
                     callback()
                 }
             };
+
             return{
                 item_index:'3',
-
+                //预约
                 ReserveForm: {
                     ID: '',
                     PID:'',
@@ -220,21 +222,20 @@
                         { type: 'date', validator:CheckEnd, trigger:'blur'}
                     ]
                 },
-
                 input:{
                     MID: '',
                     StartTime: '',
                     EndTime:''
                 },
                 MeetingList:[],
+                //我的病人
                 PatientList:[
                     {PID:'000001',name:'lc',sex:'male',ache:'headache'},
                     {PID:'000002',name:'zyc',sex:'female',ache:'stomachache'}
                 ],
-
                 IsDetail:false,
                 DetailTable:{},
-
+                //加入会议
                 LoginMeetForm:{
                     username:'',
                     mid:''
@@ -248,13 +249,12 @@
         methods: {
             //header
             GotoMine() {
-                // this.$router.push('/Home/Mine');
-                this.$router.push('/Test');
+                this.$router.push('/home/mine');
                 this.IsDetail = false
 
             },
             LogOut() {
-                this.$router.push('/Login');
+                this.$router.push('/login');
                 this.IsDetail = false
             },
 
@@ -333,7 +333,6 @@
             },
             //加入会诊
             JoinMeeting(index, rows){
-
             },
 
             //我的病人页函数
@@ -344,6 +343,8 @@
                 this.IsDetail=false;
             },
 
+
+            //判断是否为移动端
             _isMobile() {
                 return navigator.userAgent.match(
                     /(phone|pad|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows phone)/i
@@ -353,8 +354,6 @@
             SubmitMeetLoginForm() {
                 this.$refs.LoginMeetFormRef.validate(valid=>{
                     if(valid) {
-                        console.log(this.LoginMeetForm.username);
-                        console.log(this.LoginMeetForm.mid);
                         let name = document.getElementById('name').value;
                         let room = document.getElementById('roomName').value;
                         this.$root.MeetingMessage={
@@ -363,13 +362,12 @@
                             room: room,
                         };
                         console.log(this.$root.MeetingMessage);
-                        // this.$router.push('/Meeting');
                         if (this._isMobile()) {
                             // 手机端
-                            this.$router.push("/MobileMeeting");
+                            this.$router.push("/mobilemeeting");
                         } else {
                             // pc端
-                            this.$router.replace("/Meeting");
+                            this.$router.replace("/meeting");
                         }
                     }else{
                         this.$message.error("非法内容");

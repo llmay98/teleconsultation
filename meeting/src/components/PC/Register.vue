@@ -3,7 +3,7 @@
         <div class="reg_box">
             <!-- logo -->
             <div class="logo_box">
-                <img src="../assets/logo.jpg" alt="">
+                <img src="../../assets/logo.jpg" alt="">
             </div>
             <!-- login form -->
             <el-form ref="RegFormRef" :rules="RegFormRules" class="form_box" :model="RegForm">

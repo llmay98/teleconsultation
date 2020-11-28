@@ -7,20 +7,17 @@
 <script>
   export default {
     name: 'app',
-    // created(){
-    //   if(this.$router.path !== '/Home'){
-    //     this.$router.replace('/Home')
-    //   }
-    // }
+
     mounted(){
       if (this._isMobile()) {
         // 手机端
-        this.$router.replace("/MobileHome");
+        this.$router.replace("/mobilehome");
       } else {
         // pc端
-        this.$router.replace("/");
+        this.$router.replace("/home");
       }
     },
+
     methods:{
       _isMobile() {
         return navigator.userAgent.match(
