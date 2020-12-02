@@ -28,7 +28,7 @@
 
 ## 安装
 ### 1、前端 frontends
-> 这个项目的前端使用 [node](http://nodejs.org) 和 [npm](https://npmjs.com)  
+> 这个项目的前端使用 [node](http://nodejs.org) 和 [npm](https://npmjs.com)以及vue框架，脚手架为vue-cli3.0  
 > 会议的前端代码使用了[kurento-group-call](https://github.com/Kurento/kurento-tutorial-java/tree/master/kurento-group-call)的js文件与vue框架的融合  
 > 请确保你本地安装了它们。
 
