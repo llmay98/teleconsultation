@@ -1,4 +1,4 @@
-# 标准 Readme
+# teleconsultation Readme
 
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
@@ -28,7 +28,8 @@
 
 ## 安装
 ### 1、前端 frontends
-> 这个项目的前端使用 [node](http://nodejs.org) 和 [npm](https://npmjs.com)  
+> 这个项目的前端使用 [node](http://nodejs.org) 和 [npm](https://npmjs.com)以及[vue](https://cn.vuejs.org/v2/guide/)框架  
+> 脚手架为vue-cli3：有可视化控制界面  
 > 会议的前端代码使用了[kurento-group-call](https://github.com/Kurento/kurento-tutorial-java/tree/master/kurento-group-call)的js文件与vue框架的融合  
 > 请确保你本地安装了它们。
 
@@ -54,6 +55,7 @@ $ mvn -U clean spring-boot:run
 ## 代码修改
 ### 1、前端
 + [vue](https://cn.vuejs.org/v2/guide/)框架
+  - 脚手架为vue-cli3
   - 初学者推荐去b站上面逛逛！
 + [element ui](https://element.eleme.io/#/zh-CN/component/installation)
   - 根据文档来就很好
