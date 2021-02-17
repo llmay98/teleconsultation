@@ -49,7 +49,7 @@
 > [参考文档](https://doc-kurento.readthedocs.io/en/latest/)
 ```sh
 1、运行后端服务器
-$ cd backends/kurento-group-call
+$ cd backends/kurento-tutorial-java/kurento-group-call
 $ mvn -U clean spring-boot:run
 ```  
 ## 代码修改
